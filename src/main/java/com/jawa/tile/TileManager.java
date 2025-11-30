@@ -9,8 +9,8 @@ import java.io.*;
 public class TileManager {
 
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int[][] mapTileNum;
 
 
     public TileManager(GamePanel gp) {
@@ -28,6 +28,8 @@ public class TileManager {
         tile[3] = new Tile("/tiles/earth.png");
         tile[4] = new Tile("/tiles/tree.png");
         tile[5] = new Tile("/tiles/sand.png");
+        tile[1].collision = true;
+        tile[4].collision = true;
     }
 
     public void loadMap(String filePath){

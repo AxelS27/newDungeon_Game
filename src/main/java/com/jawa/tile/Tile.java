@@ -8,9 +8,9 @@ public class Tile {
 
     public BufferedImage image;
     public boolean collision = false;
-    public Tile(String filePath) {
+    public Tile(String imageName) {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream(filePath));
+            image = ImageIO.read(getClass().getResourceAsStream("/tiles/"+imageName+".png"));
         } catch (IOException e){
             e.printStackTrace();
         }

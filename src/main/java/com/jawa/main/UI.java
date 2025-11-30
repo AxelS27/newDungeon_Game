@@ -5,6 +5,8 @@ import com.jawa.object.OBJ_Key;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class UI {
 
@@ -15,7 +17,6 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
-
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
@@ -23,74 +24,78 @@ public class UI {
         this.gp = gp;
         arial_40 = new Font("Arial", Font.PLAIN, 40);
         arial_80 = new Font("Arial", Font.PLAIN, 80);
-        OBJ_Key key = new OBJ_Key();
+        OBJ_Key key = new OBJ_Key(gp);
         keyImage = key.image;
+        dFormat.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.US));
     }
 
-    public void showMessage(String text){
+    public void showMessage(String text) {
         message = text;
         messageOn = true;
     }
-    public void draw(Graphics g2) {
 
-        if (gameFinished){
+    public void draw(Graphics2D g2) {
+        if (gameFinished) {
+            if (gp.gameState == gp.playState) {
+                g2.setFont(arial_40);
+                g2.setColor(Color.white);
+                String text = "You found the treasure!";
+                int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+                int x = gp.screenWidth / 2 - textLength / 2;
+                int y = gp.screenHeight / 2 - (gp.tileSize * 3);
+                g2.drawString(text, x, y);
 
-            g2.setFont(arial_40);
-            g2.setColor(Color.white);
+                text = "Your Time is: " + dFormat.format(playTime) + "!";
+                textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+                x = gp.screenWidth / 2 - textLength / 2;
+                y = gp.screenHeight / 2 + (gp.tileSize * 4);
+                g2.drawString(text, x, y);
 
-            String text;
+                g2.setFont(arial_80);
+                g2.setColor(Color.yellow);
+                text = "Congratulations";
+                textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+                x = gp.screenWidth / 2 - textLength / 2;
+                y = gp.screenHeight / 2 + (gp.tileSize * 2);
+                g2.drawString(text, x, y);
 
-            int textLength;
-            int x, y;
-
-            text = "You found the treassure!";
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.screenWidth/2 - textLength/2;
-            y = gp.screenHeight/2 - (gp.tileSize*3);
-            g2.drawString(text, x, y);
-
-
-            text = "Your Time is: " + dFormat.format(playTime) + "!";
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.screenWidth/2 - textLength/2;
-            y = gp.screenHeight/2 + (gp.tileSize*4);
-            g2.drawString(text, x, y);
-
-            g2.setFont(arial_80);
-            g2.setColor(Color.yellow);
-            text = "Congratulations";
-            textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-            x = gp.screenWidth/2 - textLength/2;
-            y = gp.screenHeight/2 + (gp.tileSize*2);
-            g2.drawString(text, x, y);
-
-
-            gp.gameThread = null;
+                gp.gameThread = null;
+            } else if (gp.gameState == gp.pauseState) {
+                drawPauseScreen(g2);
+            }
         } else {
             g2.setFont(arial_40);
             g2.setColor(Color.white);
-            g2.drawImage(keyImage, gp.tileSize/2, gp.tileSize/2, gp.tileSize, gp.tileSize, null);
+            g2.drawImage(keyImage, gp.tileSize / 2, gp.tileSize / 2, gp.tileSize, gp.tileSize, null);
             g2.drawString("x " + gp.player.hasKey, 74, 65);
 
-            playTime += (double)1/60;
-            g2.drawString("Time:"+ dFormat.format(playTime), gp.tileSize*11, 65);
+            if (gp.gameState == gp.playState) {
+                playTime += (double) 1 / 60;
+            }
+            g2.drawString("Time: " + dFormat.format(playTime), gp.tileSize * 11, 65);
 
-            if (messageOn){
+            if (messageOn) {
                 g2.setFont(g2.getFont().deriveFont(30F));
-                g2.drawString(message, gp.tileSize/2, gp.tileSize*5);
-
+                g2.drawString(message, gp.tileSize / 2, gp.tileSize * 5);
                 messageCounter++;
-
-                if (messageCounter > 120){
+                if (messageCounter > 120) {
                     messageCounter = 0;
                     messageOn = false;
                 }
-
             }
         }
-
-
-
     }
 
+    public void drawPauseScreen(Graphics2D g2) {
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
+        String text = "PAUSED";
+        int x = getXforCenteredText(text, g2);
+        int y = gp.screenHeight / 2;
+        g2.drawString(text, x, y);
+    }
+
+    public int getXforCenteredText(String text, Graphics2D g2) {
+        int length = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+        return gp.screenWidth / 2 - length / 2;
+    }
 }

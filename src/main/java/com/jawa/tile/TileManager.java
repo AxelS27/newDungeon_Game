@@ -1,6 +1,7 @@
 package com.jawa.tile;
 
 import com.jawa.main.GamePanel;
+import com.jawa.main.UtilityTool;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,21 +16,49 @@ public class TileManager {
 
     public TileManager(GamePanel gp) {
         this.gp = gp;
-        tile = new Tile[10];
+        tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMap("/maps/world01.txt");
+        loadMap("/maps/worldv2.txt");
     }
 
     public void getTileImage(){
-        tile[0] = new Tile("/tiles/grass01.png");
-        tile[1] = new Tile("/tiles/wall.png");
-        tile[2] = new Tile("/tiles/water01.png");
-        tile[3] = new Tile("/tiles/earth.png");
-        tile[4] = new Tile("/tiles/tree.png");
-        tile[5] = new Tile("/tiles/sand.png");
-        tile[1].collision = true;
-        tile[4].collision = true;
+        // PLACEHOLDER
+        int[] indexes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        for (int index : indexes) {
+            setup(index, "grass00", false);
+        }
+
+        // TILES
+        setup(11, "grass01", false);
+
+        // WATER loop
+        indexes = new int[]{12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
+        for(int i = 0; i < indexes.length; i++){
+            String waterIndex = "water" + String.format("%02d", i);
+            setup(indexes[i], waterIndex, true);
+        }
+
+        // ROAD loop
+        indexes = new int[]{26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38};
+        for(int i = 0; i < indexes.length; i++){
+            String roadIndex = "road" + String.format("%02d", i);
+            setup(indexes[i], roadIndex, false);
+        }
+
+        setup(39, "earth", false);
+        setup(40, "wall", true);
+        setup(41,"tree", true);
+
+    }
+
+    public void setup(int index, String imageName, boolean collision){
+        UtilityTool uTool = new UtilityTool();
+
+        tile[index] = new Tile(imageName);
+        tile[index].image = uTool.scaleImage(tile[index].image, gp.tileSize, gp.tileSize);
+        tile[index].collision = collision;
+
     }
 
     public void loadMap(String filePath){

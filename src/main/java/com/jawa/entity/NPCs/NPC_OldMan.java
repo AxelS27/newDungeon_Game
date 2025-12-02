@@ -6,14 +6,16 @@ import com.jawa.main.GamePanel;
 import java.util.Random;
 
 public class NPC_OldMan extends Entity {
+    GamePanel gp;
     public NPC_OldMan(GamePanel gp){
         super(gp);
-
+        this.gp = gp;
+        
         direction = "down";
         speed = 1;
 
         getImage();
-
+        setDialogue();
     }
 
     public void getImage(){
@@ -26,7 +28,13 @@ public class NPC_OldMan extends Entity {
         right1 = setup("/NPCs/oldman_right_1");
         right2 = setup("/NPCs/oldman_right_2");
     }
-
+    public void setDialogue() {
+        dialogues[0] = "Hello, Sir";
+        dialogues[1] = "Namaku si paajmjajajajajajajajajaajjajaj \najajajsdsadadasdada";
+        dialogues[2] = "Si tua";
+        dialogues[3] = "Dari gua hantu";
+    }
+    
     public void setAction(){
 
         actionLockCounter++;
@@ -54,6 +62,9 @@ public class NPC_OldMan extends Entity {
 
 
 
+    }
+    public void speak(){
+       super.speak(); 
     }
 
 

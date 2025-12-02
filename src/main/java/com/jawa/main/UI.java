@@ -17,6 +17,7 @@ public class UI {
     public String message = "";
     int messageCounter = 0;
     public boolean gameFinished = false;
+    public String currentDialogue = "";
     double playTime;
     DecimalFormat dFormat = new DecimalFormat("#0.00");
 
@@ -90,8 +91,18 @@ public class UI {
     }
 
     public void drawDialogueScreen(Graphics2D g2) {
-        int x=gp.tileSize * 2, y=gp.tileSize/2, width=gp.screenWidth-(gp.tileSize*4), height=gp.tileSize*5;
+        int x=gp.tileSize * 2, y=gp.tileSize/2, width=gp.screenWidth-(gp.tileSize*4), height=gp.tileSize*4;
         drawSubWindoww(x, y, width, height, g2);
+        
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN,28F));
+        x += gp.tileSize;
+        y += gp.tileSize;
+        
+        for(String line : currentDialogue.split("\n")){
+            g2.drawString(line, x, y);
+            y += 40;
+        }
+        
     }
 
     public void drawSubWindoww(int x, int y, int width, int height, Graphics2D g2) {

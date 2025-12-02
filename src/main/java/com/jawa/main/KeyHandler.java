@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
 
     GamePanel gp;
     public KeyHandler(GamePanel gp){
@@ -19,26 +19,47 @@ public class KeyHandler implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
-        if (code == KeyEvent.VK_W){
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_S){
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A){
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D){
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_ESCAPE){
-            if (gp.gameState == gp.playState){
+        
+        if(gp.gameState == gp.playState){
+            if (code == KeyEvent.VK_W){
+                upPressed = true;
+            }
+            if (code == KeyEvent.VK_S){
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A){
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D){
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_ESCAPE){
                 gp.gameState = gp.pauseState;
-            } else if (gp.gameState == gp.pauseState){
+            }
+            if (code == KeyEvent.VK_E){
+                ePressed = true;
+            }
+//                if (gp.gameState == gp.playState){
+//                    gp.gameState = gp.pauseState;
+//                } else if (gp.gameState == gp.pauseState){
+//                    gp.gameState = gp.playState;
+//                    System.out.println("PEncet");
+//                }
+            
+        }
+        
+        else if(gp.gameState == gp.pauseState) {
+            if (code == KeyEvent.VK_ESCAPE){
                 gp.gameState = gp.playState;
-                System.out.println("PEncet");
             }
         }
+        
+        else if(gp.gameState == gp.dialogueState) {
+            if(code == KeyEvent.VK_ENTER) {
+                gp.gameState = gp.playState;
+            }
+        }
+
     }
 
     @Override

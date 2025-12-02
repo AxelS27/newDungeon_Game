@@ -1,5 +1,6 @@
 package com.jawa.main;
 
+import com.jawa.entity.NPCs.NPC_OldMan;
 import com.jawa.object.OBJ_Boots;
 import com.jawa.object.OBJ_Chest;
 import com.jawa.object.OBJ_Door;
@@ -46,6 +47,12 @@ public class AssetSetter {
         gp.obj[7].worldX = 37 * gp.tileSize;
         gp.obj[7].worldY = 42 * gp.tileSize;
 
+    }
+
+    public void setNPC(){
+        gp.npc[0] = new NPC_OldMan(gp);
+        gp.npc[0].worldX = gp.tileSize * 21;
+        gp.npc[0].worldY = gp.tileSize * 21;
     }
 
 }

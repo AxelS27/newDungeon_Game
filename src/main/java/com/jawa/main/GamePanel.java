@@ -1,5 +1,6 @@
 package com.jawa.main;
 
+import com.jawa.entity.Entity;
 import com.jawa.entity.Player;
 import com.jawa.object.SuperObject;
 import com.jawa.tile.TileManager;
@@ -34,10 +35,12 @@ public class GamePanel extends JPanel implements Runnable{
 
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[10];
+    public Entity[] npc = new Entity[10];
 
     public int gameState;
     public final int playState = 1;
     public final int pauseState = 2;
+    public final int dialogueState = 3;
 
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -49,8 +52,9 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void setupGame(){
         assetSetter.setObject();
+        assetSetter.setNPC();
         playMusic(0);
-//        stopMusic();
+        stopMusic();
         gameState = playState;
     }
 
@@ -91,6 +95,11 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         if (gameState == playState){
             player.update();
+            for (Entity entity : npc) {
+                if (entity != null){
+                    entity.update();
+                }
+            }
         }
     }
 
@@ -102,6 +111,12 @@ public class GamePanel extends JPanel implements Runnable{
         for (SuperObject superObject : obj) {
             if (superObject != null) {
                 superObject.draw(g2, this);
+            }
+        }
+
+        for (Entity entity : npc) {
+            if (entity != null) {
+                entity.draw(g2);
             }
         }
 

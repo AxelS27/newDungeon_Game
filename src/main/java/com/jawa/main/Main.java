@@ -1,5 +1,7 @@
 package com.jawa.main;
 
+import com.jawa.database.DBConnector;
+
 import javax.swing.JFrame;
 
 public class Main {
@@ -20,6 +22,8 @@ public class Main {
 
         gamePanel.setupGame();
         gamePanel.startGameThread();
+
+        DBConnector.getConnection();
 
     }
 }

@@ -6,6 +6,7 @@ import com.jawa.object.SuperObject;
 import com.jawa.tile.TileManager;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -32,10 +33,12 @@ public class GamePanel extends JPanel implements Runnable{
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter assetSetter = new AssetSetter(this);
     public UI ui = new UI(this);
+    public EventHandler eventHandler = new EventHandler(this);
 
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[10];
     public Entity[] npc = new Entity[10];
+    public Entity[] monster = new Entity[20];
 
     public int gameState;
     public final int playState = 1;
@@ -53,8 +56,9 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGame(){
         assetSetter.setObject();
         assetSetter.setNPC();
-        playMusic(0);
-        stopMusic();
+        assetSetter.setMonster();
+        //playMusic(0);
+        //stopMusic();
         gameState = playState;
     }
 
@@ -100,6 +104,16 @@ public class GamePanel extends JPanel implements Runnable{
                     entity.update();
                 }
             }
+            for (int i=0; i<monster.length; i++) {
+                Entity entity = monster[i];
+                if (entity != null){
+                    if (entity.alive && !entity.dying){
+                        entity.update();
+                    } else if (!entity.alive) {
+                        monster[i] = null;
+                    }
+                }
+            }
         }
     }
 
@@ -115,6 +129,12 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
         for (Entity entity : npc) {
+            if (entity != null) {
+                entity.draw(g2);
+            }
+        }
+
+        for (Entity entity : monster) {
             if (entity != null) {
                 entity.draw(g2);
             }

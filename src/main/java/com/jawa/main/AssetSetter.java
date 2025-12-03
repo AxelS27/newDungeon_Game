@@ -1,6 +1,7 @@
 package com.jawa.main;
 
 import com.jawa.entity.NPCs.NPC_OldMan;
+import com.jawa.entity.monster.MON_GreenSlime;
 import com.jawa.object.OBJ_Boots;
 import com.jawa.object.OBJ_Chest;
 import com.jawa.object.OBJ_Door;
@@ -53,6 +54,16 @@ public class AssetSetter {
         gp.npc[0] = new NPC_OldMan(gp);
         gp.npc[0].worldX = gp.tileSize * 21;
         gp.npc[0].worldY = gp.tileSize * 21;
+    }
+
+    public void setMonster(){
+        gp.monster[0] = new MON_GreenSlime(gp);
+        gp.monster[0].worldX = gp.tileSize *  23;
+        gp.monster[0].worldY = gp.tileSize * 36;
+
+        gp.monster[1] = new MON_GreenSlime(gp);
+        gp.monster[1].worldX = gp.tileSize *  23;
+        gp.monster[1].worldY = gp.tileSize * 37;
     }
 
 }

@@ -23,7 +23,7 @@ public class Main {
         gamePanel.setupGame();
         gamePanel.startGameThread();
 
-        DBConnector.getConnection();
+        //DBConnector.getConnection();
 
     }
 }

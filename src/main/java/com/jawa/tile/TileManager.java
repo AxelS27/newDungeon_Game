@@ -19,36 +19,28 @@ public class TileManager {
         tile = new Tile[50];
         mapTileNum = new int[gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
-        loadMap("/maps/worldv2.txt");
     }
 
     public void getTileImage(){
-        // PLACEHOLDER
-        int[] indexes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        for (int index : indexes) {
-            setup(index, "grass00", false);
-        }
 
-        // TILES
-        setup(11, "grass01", false);
-
-        // WATER loop
-        indexes = new int[]{12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25};
-        for(int i = 0; i < indexes.length; i++){
-            String waterIndex = "water" + String.format("%02d", i);
-            setup(indexes[i], waterIndex, true);
-        }
-
-        // ROAD loop
-        indexes = new int[]{26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38};
-        for(int i = 0; i < indexes.length; i++){
+        setup(0, "earth", false);
+        setup(1, "floor", false);
+        setup(2, "hut", true);
+        int[] indexes1 = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+        for(int i = 0; i < indexes1.length; i++){
             String roadIndex = "road" + String.format("%02d", i);
-            setup(indexes[i], roadIndex, false);
+            setup(indexes1[i], roadIndex, false);
         }
-
-        setup(39, "earth", false);
-        setup(40, "wall", true);
-        setup(41,"tree", true);
+        setup(16, "sand", false);
+        setup(17, "snow", false);
+        setup(18, "table", true);
+        setup(19, "tree", true);
+        setup(20, "wall", true);
+        int[] indexes2 = {21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34};
+        for(int i = 0; i < indexes2.length; i++){
+            String waterIndex = "water" + String.format("%02d", i);
+            setup(indexes2[i], waterIndex, true);
+        }
 
     }
 

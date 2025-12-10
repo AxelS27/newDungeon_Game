@@ -3,6 +3,7 @@ package com.jawa.entity;
 import com.jawa.main.GamePanel;
 import com.jawa.main.KeyHandler;
 import com.jawa.main.UtilityTool;
+import com.jawa.object.OBJ_Door;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -18,7 +19,7 @@ public class Player extends Entity {
 
     public boolean attackCanceled = false;
 
-    public int hasKey = 0;
+    public int hasKey = 5;
 
     public Player(GamePanel gp, KeyHandler keyH) {
 
@@ -119,6 +120,15 @@ public class Player extends Entity {
                     case "right": worldX += speed; break;
                 }
             }
+
+            if (keyH.ePressed && !attackCanceled){
+                gp.playSE(7);
+                attacking = true;
+                spriteCounter = 0;
+            }
+
+            attackCanceled = false;
+
             gp.keyH.ePressed = false;
             spriteCounter++;
             if (spriteCounter > 12){
@@ -236,9 +246,10 @@ public class Player extends Entity {
                     gp.ui.showMessage("Speed up!");
                     break;
                 case "Chest":
-                    gp.ui.gameFinished = true;
-                    gp.stopMusic();
                     gp.playSE(4);
+                    gp.ui.gameFinished = true;
+                    gp.chestOpened = true;
+                    gp.obj[i] = null;
                     break;
             }
         }

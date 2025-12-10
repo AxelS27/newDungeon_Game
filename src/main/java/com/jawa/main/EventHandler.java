@@ -43,6 +43,7 @@ public class EventHandler {
     public void healingPool(int gameState){
         if (gp.keyH.ePressed){
             gp.gameState = gameState;
+            gp.player.attackCanceled = true;
             gp.ui.currentDialogue = "You drink the water\nYou life has been recovered";
             gp.player.life = gp.player.maxLife;
         }

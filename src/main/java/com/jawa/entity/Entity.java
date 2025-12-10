@@ -55,7 +55,7 @@ public class Entity {
 
     public void setAction(){}
     public void damageReaction(){
-
+        //nanti saja
     }
     public void speak(){
         if(dialogues[dialogueIndex] == null){
@@ -80,6 +80,7 @@ public class Entity {
             
         }
     }
+
     public void update(){
         setAction();
 

@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
 public class KeyHandler implements KeyListener {
     public boolean upPressed, downPressed, leftPressed, rightPressed, ePressed;
     GamePanel gp;
@@ -31,7 +32,7 @@ public class KeyHandler implements KeyListener {
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.mainMenuIndex == 0) {
-                    gp.setupGame();
+                    gp.setupGame(1);
                     gp.startGameThread();
                 } else if (gp.mainMenuIndex == 1) {
                     gp.gameState = gp.levelSelectState;
@@ -55,8 +56,7 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_ENTER) {
                 if (gp.levelSelectIndex >= 0 && gp.levelSelectIndex <= 5) {
                     int mapNumber = gp.levelSelectIndex + 1;
-                    gp.setupGame();
-                    gp.changeMap(mapNumber);
+                    gp.setupGame(mapNumber);
                     gp.startGameThread();
                 }
             }

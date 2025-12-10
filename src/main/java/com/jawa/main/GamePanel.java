@@ -9,6 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+
 public class GamePanel extends JPanel implements Runnable {
     final int originalTileSize = 16;
     final int scale = 3;
@@ -53,14 +54,18 @@ public class GamePanel extends JPanel implements Runnable {
         gameState = mainMenuState;
     }
 
-    public void setupGame() {
+    public void setupGame(int mapNumber) {
         keyH.upPressed = false;
         keyH.downPressed = false;
         keyH.leftPressed = false;
         keyH.rightPressed = false;
         keyH.ePressed = false;
-        changeMap(1);
+        changeMap(mapNumber);
         gameState = playState;
+    }
+
+    public void setupGame() {
+        setupGame(1);
     }
 
     public void startGameThread() {
@@ -131,8 +136,6 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        ui.draw(g2);
-
         if (gameState != mainMenuState && gameState != levelSelectState && !ui.gameFinished) {
             tileM.draw(g2);
             for (SuperObject superObject : obj) {
@@ -152,6 +155,8 @@ public class GamePanel extends JPanel implements Runnable {
             }
             player.draw(g2);
         }
+
+        ui.draw(g2);
 
         g2.dispose();
     }

@@ -30,13 +30,18 @@ public class EventHandler {
     public void checkEvent(){
         int map = gp.currentMap;
         switch(map){
-            case 1:
+            case 2:
                 teleportTo(8, 8, 9, 18);
                 teleportTo(8, 18, 9, 8);
                 teleportTo(8, 28, 37,22);
                 teleportTo(36, 22, 9, 28);
                 teleportTo(22, 27, 13, 39);
                 teleportTo(11, 39, 22, 26);
+                break;
+                
+            case 4:
+                teleportTo(42, 7, 42, 15);
+                teleportTo(42, 14, 42, 8);
                 break;
 
         }

@@ -135,7 +135,7 @@ public class CollisionChecker {
         int index = -1;
 
         for (int i=0; i<target.length; i++){
-            if (target[i] != null){
+            if (target[i] != null && target[i].alive && !target[i].dying){
                 entity.solidArea.x = entity.worldX + entity.solidArea.x;
                 entity.solidArea.y = entity.worldY + entity.solidArea.y;
 
@@ -185,6 +185,7 @@ public class CollisionChecker {
 
         return index;
     }
+
     public boolean checkPlayer(Entity entity){
 
         boolean contactPlayer = false;

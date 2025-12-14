@@ -43,6 +43,9 @@ public class EventHandler {
                 teleportTo(42, 7, 42, 15);
                 teleportTo(42, 14, 42, 8);
                 break;
+            case 5:
+                teleportTo(39, 14, 45, 4);
+                break;
 
         }
 //        if (hit(27, 16, "right")) {

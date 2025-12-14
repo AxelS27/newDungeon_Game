@@ -35,6 +35,22 @@ public class NPC_OldMan extends Entity {
                 dialogues[0] = "Hello adventurer!";
                 dialogues[1] = "Ganbate";
                 break;
+            case 2:
+                dialogues[0] = "Hello adventurer!";
+                dialogues[1] = "Ganbate";
+                break;
+            case 3:
+                dialogues[0] = "Hello adventurer!";
+                dialogues[1] = "Ganbate";
+                break;
+            case 4:
+                dialogues[0] = "Hello adventurer!";
+                dialogues[1] = "Ganbate";
+                break;
+            case 5:
+                dialogues[0] = "Hello adventurer!";
+                dialogues[1] = "Ganbate";
+                break;
         }
 
     }

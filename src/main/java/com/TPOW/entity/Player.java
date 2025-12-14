@@ -148,7 +148,7 @@ public class Player extends Entity {
 
     public void contactMonster(int i) {
         if (i != -1) {
-            if (!invincible) {
+            if (!invincible && gp.monster[i] != null && !gp.monster[i].dying && gp.monster[i].alive) {
                 gp.playSE(6);
                 life -= 1;
                 invincible = true;
@@ -204,11 +204,14 @@ public class Player extends Entity {
                     int currentLevel = gp.currentMap;
                     int nextLevel = currentLevel + 1;
                     int maxLevel = 5;
-                    if (nextLevel <= maxLevel) {
+
+                    if (nextLevel > gp.currentUserCurrentLevel && nextLevel <= maxLevel) {
                         gp.updateCurrentUserLevel(nextLevel);
                         gp.ui.showMessage("Level " + currentLevel + " completed! Unlocked Level " + nextLevel + ".");
-                    } else {
+                    } else if (nextLevel > maxLevel) {
                         gp.ui.showMessage("Congratulations! You completed all levels.");
+                    } else {
+                        gp.ui.showMessage("Level " + currentLevel + " completed!");
                     }
                     break;
             }

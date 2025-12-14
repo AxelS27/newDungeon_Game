@@ -71,7 +71,19 @@ public class UI {
             if (gp.gameState == gp.playState) {
                 drawPlayerLife(g2);
                 g2.setFont(arial_40);
-                g2.setColor(Color.white);
+                int map = gp.currentMap;
+                switch (map){
+                    case 1:
+                    case 2:
+                    case 3:
+                        g2.setColor(Color.black);
+                        break;
+                    case 4:
+                    case 5:
+                        g2.setColor(Color.white);
+                        break;
+                }
+
                 g2.drawImage(keyImage, gp.tileSize / 2, gp.tileSize / 2 + 80, gp.tileSize, gp.tileSize, null);
                 g2.drawString("x " + gp.player.hasKey, 74, 65 + 80);
                 playTime += (double) 1 / 60;
@@ -85,7 +97,7 @@ public class UI {
                         messageOn = false;
                     }
                 }
-            } else if (gp.gameState == gp.pauseState) {
+            } else if (gp.gameState == gp.pauseMenuState) {
                 drawPlayerLife(g2);
                 drawPauseScreen(g2);
             } else if (gp.gameState == gp.dialogueState) {
@@ -123,10 +135,10 @@ public class UI {
         x += gp.tileSize;
         y += gp.tileSize;
         for (String line : currentDialogue.split("\n")) {
-                g2.drawString(line, x, y);
-        y += 40;
+            g2.drawString(line, x, y);
+            y += 40;
+        }
     }
-}
 public void drawSubWindoww(int x, int y, int width, int height, Graphics2D g2) {
     Color c = new Color(0, 0, 0, 210);
     g2.setColor(c);
@@ -136,122 +148,168 @@ public void drawSubWindoww(int x, int y, int width, int height, Graphics2D g2) {
     g2.setStroke(new BasicStroke(5));
     g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
 }
-public void drawPauseScreen(Graphics2D g2) {
-    g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 80F));
-    String text = "PAUSED";
-    int x = getXforCenteredText(text, g2);
-    int y = gp.screenHeight / 2;
-    g2.drawString(text, x, y);
-}
-public void drawMainMenu(Graphics2D g2) {
-    g2.setColor(Color.BLACK);
-    g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-    g2.setFont(new Font("Arial", Font.BOLD, 50));
-    String title = "THE PATH OF WINTER";
-    int titleWidth = (int) g2.getFontMetrics().getStringBounds(title, g2).getWidth();
-    int x = gp.screenWidth / 2 - titleWidth / 2;
-    int y = gp.screenHeight / 2 - 120;
-    g2.setColor(new Color(173, 216, 230));
-    g2.drawString(title, x, y);
-    g2.setFont(new Font("Arial", Font.PLAIN, 40));
-    String[] options = {"Start", "Level", "Logout"};
-    for (int i = 0; i < options.length; i++) {
-        int optionWidth = (int) g2.getFontMetrics().getStringBounds(options[i], g2).getWidth();
-        x = gp.screenWidth / 2 - optionWidth / 2;
-        y = gp.screenHeight / 2 + i * 60;
-        if (i == gp.mainMenuIndex) {
-            g2.setColor(Color.CYAN);
-            g2.drawString(">", x - 40, y);
-        } else {
-            g2.setColor(Color.WHITE);
+    public void drawPauseScreen(Graphics2D g2) {
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+
+        g2.setFont(new Font("Arial", Font.BOLD, 60));
+        String title = "PAUSED";
+        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(title) / 2;
+        int y = gp.screenHeight / 2 - 120;
+        g2.setColor(Color.YELLOW);
+        g2.drawString(title, x, y);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 40));
+        String[] options = {"Resume", "Back to Main Menu"};
+        for (int i = 0; i < options.length; i++) {
+            int optionWidth = g2.getFontMetrics().stringWidth(options[i]);
+            x = gp.screenWidth / 2 - optionWidth / 2;
+            y = gp.screenHeight / 2 + i * 60;
+
+            if (i == gp.pauseMenuIndex) {
+                g2.setColor(Color.GREEN);
+                g2.drawString(">", x - 40, y);
+            } else {
+                g2.setColor(Color.WHITE);
+            }
+            g2.drawString(options[i], x, y);
         }
-        g2.drawString(options[i], x, y);
     }
-}
-public void drawLoginScreen(Graphics2D g2) {
-    g2.setColor(new Color(0, 0, 0, 200));
-    g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-    g2.setFont(new Font("Arial", Font.BOLD, 50));
-    String title = "LOGIN";
-    int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(title) / 2;
-    int y = 120;
-    g2.setColor(Color.CYAN);
-    g2.drawString(title, x, y);
-    drawInputField(g2, "Username", gp.keyH.inputUsername, 200, gp.keyH.activeField == 0);
-    drawInputField(g2, "Password", "*".repeat(gp.keyH.inputPassword.length()), 280, gp.keyH.activeField == 1);
-    String[] buttons = {"Login", "Register", "Exit"};
-    int btnY = 350;
-    for (int i = 0; i < buttons.length; i++) {
-        x = gp.screenWidth / 2 - 100;
-        y = btnY + i * 60;
-        if (gp.keyH.activeField == i + 2) {
-            g2.setColor(Color.CYAN);
-            g2.drawString(">", x - 50, y);
-        } else {
-            g2.setColor(new Color(175, 238, 238));
+    public void drawMainMenu(Graphics2D g2) {
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setFont(new Font("Arial", Font.BOLD, 50));
+        String title = "THE PATH OF WINTER";
+        int titleWidth = (int) g2.getFontMetrics().getStringBounds(title, g2).getWidth();
+        int x = gp.screenWidth / 2 - titleWidth / 2;
+        int y = gp.screenHeight / 2 - 120;
+        g2.setColor(new Color(173, 216, 230));
+        g2.drawString(title, x, y);
+        g2.setFont(new Font("Arial", Font.PLAIN, 40));
+        String[] options = {"Start", "Level", "Logout"};
+        for (int i = 0; i < options.length; i++) {
+            int optionWidth = (int) g2.getFontMetrics().getStringBounds(options[i], g2).getWidth();
+            x = gp.screenWidth / 2 - optionWidth / 2;
+            y = gp.screenHeight / 2 + i * 60;
+            if (i == gp.mainMenuIndex) {
+                g2.setColor(Color.CYAN);
+                g2.drawString(">", x - 40, y);
+            } else {
+                g2.setColor(Color.WHITE);
+            }
+            g2.drawString(options[i], x, y);
         }
-        g2.drawString(buttons[i], x, y);
     }
-    g2.setFont(new Font("Arial", Font.PLAIN, 20));
-    g2.setColor(Color.LIGHT_GRAY);
-    g2.drawString("Use ↑↓ to navigate, ENTER to select", gp.screenWidth / 2 - 180, gp.screenHeight - 40);
-    g2.drawString("Press ENTER again to finish typing", gp.screenWidth / 2 - 190, gp.screenHeight - 10);
-    if (messageOn) {
-        g2.setFont(new Font("Arial", Font.PLAIN, 24));
-        g2.setColor(Color.RED);
-        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(message) / 2;
-        y = 50;
-        g2.drawString(message, x, y);
-    }
-}
-public void drawRegisterScreen(Graphics2D g2) {
-    g2.setColor(new Color(0, 0, 0, 200));
-    g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
-    g2.setFont(new Font("Arial", Font.BOLD, 50));
-    String title = "REGISTER";
-    int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(title) / 2;
-    int y = 120;
-    g2.setColor(Color.WHITE);
-    g2.drawString(title, x, y);
-    drawInputField(g2, "Username", gp.keyH.inputUsername, 200, gp.keyH.activeField == 0);
-    drawInputField(g2, "Password", "*".repeat(gp.keyH.inputPassword.length()), 280, gp.keyH.activeField == 1);
-    String[] buttons = {"Register", "Back"};
-    int btnY = 350;
-    for (int i = 0; i < buttons.length; i++) {
-        x = gp.screenWidth / 2 - 100;
-        y = btnY + i * 60;
-        if (gp.keyH.activeField == i + 2) {
-            g2.setColor(Color.CYAN);
-            g2.drawString(">", x - 50, y);
-        } else {
-            g2.setColor(new Color(175, 238, 238));
+    public void drawLoginScreen(Graphics2D g2) {
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setFont(new Font("Arial", Font.BOLD, 50));
+        String title = "LOGIN";
+        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(title) / 2;
+        int y = 120;
+        g2.setColor(Color.CYAN);
+        g2.drawString(title, x, y);
+
+        drawInputField(g2, "Username", gp.keyH.inputUsername, 200, gp.keyH.activeField == 0);
+        drawInputField(g2, "Password", "*".repeat(gp.keyH.inputPassword.length()), 280, gp.keyH.activeField == 1);
+
+        String[] buttons = {"Login", "Register", "Exit"};
+        int btnY = 350;
+        for (int i = 0; i < buttons.length; i++) {
+            int btnWidth = g2.getFontMetrics().stringWidth(buttons[i]);
+            x = gp.screenWidth / 2 - btnWidth / 2;
+            y = btnY + i * 60;
+            if (gp.keyH.activeField == i + 2) {
+                g2.setColor(Color.CYAN);
+                g2.drawString(">", x - 50, y);
+            } else {
+                g2.setColor(new Color(175, 238, 238));
+            }
+            g2.drawString(buttons[i], x, y);
         }
-        g2.drawString(buttons[i], x, y);
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        g2.setColor(Color.LIGHT_GRAY);
+        String inst1 = "Use ↑↓ to navigate, ENTER to select";
+        String inst2 = "Press ENTER again to finish typing";
+        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(inst1) / 2;
+        g2.drawString(inst1, x, gp.screenHeight - 40);
+        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(inst2) / 2;
+        g2.drawString(inst2, x, gp.screenHeight - 10);
+
+        if (messageOn) {
+            g2.setFont(new Font("Arial", Font.PLAIN, 24));
+            g2.setColor(Color.RED);
+            x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(message) / 2;
+            y = 50;
+            g2.drawString(message, x, y);
+        }
     }
-    g2.setFont(new Font("Arial", Font.PLAIN, 20));
-    g2.setColor(Color.LIGHT_GRAY);
-    g2.drawString("Use ↑↓ to navigate, ENTER to select", gp.screenWidth / 2 - 180, gp.screenHeight - 40);
-    g2.drawString("Press ENTER again to finish typing", gp.screenWidth / 2 - 190, gp.screenHeight - 10);
-    if (messageOn) {
-        g2.setFont(new Font("Arial", Font.PLAIN, 24));
-        g2.setColor(Color.RED);
-        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(message) / 2;
-        y = 50;
-        g2.drawString(message, x, y);
+
+    public void drawRegisterScreen(Graphics2D g2) {
+        g2.setColor(new Color(0, 0, 0, 200));
+        g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+        g2.setFont(new Font("Arial", Font.BOLD, 50));
+        String title = "REGISTER";
+        int x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(title) / 2;
+        int y = 120;
+        g2.setColor(Color.WHITE);
+        g2.drawString(title, x, y);
+
+        drawInputField(g2, "Username", gp.keyH.inputUsername, 200, gp.keyH.activeField == 0);
+        drawInputField(g2, "Password", "*".repeat(gp.keyH.inputPassword.length()), 280, gp.keyH.activeField == 1);
+
+        String[] buttons = {"Register", "Back"};
+        int btnY = 350;
+        for (int i = 0; i < buttons.length; i++) {
+            int btnWidth = g2.getFontMetrics().stringWidth(buttons[i]);
+            x = gp.screenWidth / 2 - btnWidth / 2;
+            y = btnY + i * 60;
+            if (gp.keyH.activeField == i + 2) {
+                g2.setColor(Color.CYAN);
+                g2.drawString(">", x - 50, y);
+            } else {
+                g2.setColor(new Color(175, 238, 238));
+            }
+            g2.drawString(buttons[i], x, y);
+        }
+
+        g2.setFont(new Font("Arial", Font.PLAIN, 20));
+        g2.setColor(Color.LIGHT_GRAY);
+        String inst1 = "Use ↑↓ to navigate, ENTER to select";
+        String inst2 = "Press ENTER again to finish typing";
+        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(inst1) / 2;
+        g2.drawString(inst1, x, gp.screenHeight - 40);
+        x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(inst2) / 2;
+        g2.drawString(inst2, x, gp.screenHeight - 10);
+
+        if (messageOn) {
+            g2.setFont(new Font("Arial", Font.PLAIN, 24));
+            g2.setColor(Color.RED);
+            x = gp.screenWidth / 2 - g2.getFontMetrics().stringWidth(message) / 2;
+            y = 50;
+            g2.drawString(message, x, y);
+        }
     }
-}
-private void drawInputField(Graphics2D g2, String label, String value, int y, boolean active) {
-    int x = gp.screenWidth / 2 - 150;
-    g2.setFont(new Font("Arial", Font.PLAIN, 32));
-    g2.setColor(Color.WHITE);
-    g2.drawString(label + ":", x, y);
-    g2.setColor(active ? new Color(100, 180, 255) : new Color(50, 50, 70));
-    g2.fillRoundRect(x + 180, y - 30, 250, 40, 10, 10);
-    g2.setColor(new Color(200, 230, 255));
-    g2.drawRoundRect(x + 180, y - 30, 250, 40, 10, 10);
-    g2.setColor(Color.WHITE);
-    g2.drawString(value, x + 190, y);
-}
+
+    private void drawInputField(Graphics2D g2, String label, String value, int y, boolean active) {
+        g2.setFont(new Font("Arial", Font.PLAIN, 32));
+        String fullLabel = label + ":";
+        int labelWidth = g2.getFontMetrics().stringWidth(fullLabel);
+        int totalWidth = labelWidth + 20 + 250;
+        int x = gp.screenWidth / 2 - totalWidth / 2;
+
+        g2.setColor(Color.WHITE);
+        g2.drawString(fullLabel, x, y);
+
+        int inputX = x + labelWidth + 20;
+        g2.setColor(active ? new Color(100, 180, 255) : new Color(50, 50, 70));
+        g2.fillRoundRect(inputX, y - 30, 250, 40, 10, 10);
+        g2.setColor(new Color(200, 230, 255));
+        g2.drawRoundRect(inputX, y - 30, 250, 40, 10, 10);
+        g2.setColor(Color.WHITE);
+        g2.drawString(value, inputX + 10, y);
+    }
     public void drawLevelSelect(Graphics2D g2) {
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);

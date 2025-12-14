@@ -53,9 +53,11 @@ public class Entity {
         this.gp =gp;
     }
 
-    public void setAction(){}
+    public void setAction(){
+        //COMING SOON
+    }
     public void damageReaction(){
-        //nanti saja
+        //COMING SOON
     }
     public void speak(){
         if(dialogues[dialogueIndex] == null){
@@ -90,14 +92,15 @@ public class Entity {
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if (this.type == 2 && contactPlayer){
-            if (!gp.player.invincible){
+            if (!gp.player.invincible && !this.dying){
                 gp.playSE(6);
-                gp.player.life -= 1;
+                gp.player.life--;
                 gp.player.invincible = true;
             }
         }
 
-        if (!collisionOn){
+
+        if (!collisionOn && !dying){
             switch(direction){
                 case "up": worldY -= speed; break;
                 case "down": worldY += speed; break;

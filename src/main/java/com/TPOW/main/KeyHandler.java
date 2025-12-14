@@ -147,18 +147,33 @@ public class KeyHandler implements KeyListener {
             if (code == KeyEvent.VK_S) downPressed = true;
             if (code == KeyEvent.VK_A) leftPressed = true;
             if (code == KeyEvent.VK_D) rightPressed = true;
-            if (code == KeyEvent.VK_ESCAPE) gp.gameState = gp.pauseState;
+            if (code == KeyEvent.VK_ESCAPE) gp.gameState = gp.pauseMenuState;
             if (code == KeyEvent.VK_E) ePressed = true;
             if (code == KeyEvent.VK_SPACE) {
                 if (gp.chestOpened && gp.ui.gameFinished) {
                     int nextMap = gp.currentMap + 1;
-                    if (nextMap <= 3) gp.changeMap(nextMap);
+                    if (nextMap <= 5) gp.changeMap(nextMap);
                     else gp.gameThread = null;
                 }
             }
-        } else if (gp.gameState == gp.pauseState) {
-            if (code == KeyEvent.VK_ESCAPE) gp.gameState = gp.playState;
-        } else if (gp.gameState == gp.dialogueState) {
+        } else if (gp.gameState == gp.pauseMenuState) {
+            if (code == KeyEvent.VK_UP) gp.pauseMenuIndex = Math.max(0, gp.pauseMenuIndex - 1);
+            if (code == KeyEvent.VK_DOWN) gp.pauseMenuIndex = Math.min(1, gp.pauseMenuIndex + 1);
+            if (code == KeyEvent.VK_ENTER) {
+                if (gp.pauseMenuIndex == 0) {
+                    gp.gameState = gp.playState;
+                } else if (gp.pauseMenuIndex == 1) {
+                    gp.gameState = gp.mainMenuState;
+                    gp.player.life = gp.player.maxLife;
+                    gp.player.invincible = false;
+                    gp.player.hasKey = 0;
+                    gp.player.speed = 4;
+                }
+            }
+            if (code == KeyEvent.VK_ESCAPE) {
+                gp.gameState = gp.playState;
+            }
+        } else if (gp.gameState == gp.dialogueState){
             if (code == KeyEvent.VK_E) gp.gameState = gp.playState;
         }
     }

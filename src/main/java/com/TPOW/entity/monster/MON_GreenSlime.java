@@ -17,7 +17,7 @@ public class MON_GreenSlime extends Entity {
         direction = "down";
 
         name = "Green Slime";
-        speed = 1;
+        speed = 2;
         maxLife = 20;
         life = maxLife;
 
@@ -47,25 +47,37 @@ public class MON_GreenSlime extends Entity {
         right2 = setup("/monsters/greenslime_down_2");
     }
 
-    public void setAction(){
-
+    public void setAction() {
         actionLockCounter++;
 
-        if (actionLockCounter != 120) return;
+        if (actionLockCounter <= 10) return;
 
-        Random random = new Random();
-        int i = random.nextInt(100)+1;
-        if (i<=25){
-            direction = "up";
-        }
-        else if (i > 25 && i <= 50){
-            direction = "down";
-        }
-        else if (i > 50 && i <= 75){
-            direction = "left";
-        }
-        else if (i > 75 && i <= 100){
-            direction = "right";
+        int chaseDistance = 5 * gp.tileSize;
+
+        int playerX = gp.player.worldX / gp.tileSize;
+        int playerY = gp.player.worldY / gp.tileSize;
+        int monsterX = worldX / gp.tileSize;
+        int monsterY = worldY / gp.tileSize;
+
+        int deltaX = playerX - monsterX;
+        int deltaY = playerY - monsterY;
+        int distance = Math.abs(deltaX) + Math.abs(deltaY);
+
+        if (distance <= chaseDistance) {
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                if (deltaX > 0) direction = "right";
+                else direction = "left";
+            } else {
+                if (deltaY > 0) direction = "down";
+                else direction = "up";
+            }
+        } else {
+            Random random = new Random();
+            int i = random.nextInt(100) + 1;
+            if (i <= 25) direction = "up";
+            else if (i <= 50) direction = "down";
+            else if (i <= 75) direction = "left";
+            else direction = "right";
         }
 
         actionLockCounter = 0;

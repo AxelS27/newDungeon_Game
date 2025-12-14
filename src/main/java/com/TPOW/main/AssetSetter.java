@@ -2,6 +2,7 @@ package com.TPOW.main;
 
 import com.TPOW.entity.NPCs.NPC_OldMan;
 import com.TPOW.entity.monster.MON_GreenSlime;
+import com.TPOW.entity.monster.MON_RedSlime;
 import com.TPOW.object.OBJ_Boots;
 import com.TPOW.object.OBJ_Chest;
 import com.TPOW.object.OBJ_Door;
@@ -22,9 +23,8 @@ public class AssetSetter {
         int i = 0;
         switch (map) {
             case 1:
-                
                 gp.player.worldX = 38 * gp.tileSize;
-                gp.player.worldY = 13 * gp.tileSize;
+                gp.player.worldY = 12 * gp.tileSize;
                 
                 gp.obj[i] = new OBJ_Key(gp);
                 gp.obj[i].worldX = 9 * gp.tileSize;
@@ -48,7 +48,6 @@ public class AssetSetter {
                 
                 break;
             case 2:
-
                 gp.player.worldX = 37 * gp.tileSize;
                 gp.player.worldY = 12 * gp.tileSize;
 
@@ -67,7 +66,6 @@ public class AssetSetter {
                 break;
                 
             case 3:
-                
                 gp.player.worldX = 37 * gp.tileSize;
                 gp.player.worldY = 11 * gp.tileSize;
                 
@@ -239,6 +237,12 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 36;
                 gp.monster[i++].worldY = gp.tileSize * 36;
+
+                for (int h=0; h<i; h++){
+                    gp.monster[h].life = 2;
+                    gp.monster[h].maxLife = 2;
+                }
+
                 break;
             case 2:
                 gp.monster[i] = new MON_GreenSlime(gp);
@@ -247,6 +251,12 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 35;
                 gp.monster[i++].worldY = gp.tileSize * 28;
+
+                for (int h=0; h<i; h++){
+                    gp.monster[h].life = 3;
+                    gp.monster[h].maxLife = 3;
+                }
+
                 break;
             case 3:
                 gp.monster[i] = new MON_GreenSlime(gp);
@@ -276,6 +286,10 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 20;
                 gp.monster[i++].worldY = gp.tileSize * 11;
+                for (int h=0; h<i; h++){
+                    gp.monster[h].life = 4;
+                    gp.monster[h].maxLife = 4;
+                }
                 break;
             case 4:
                 gp.monster[i] = new MON_GreenSlime(gp);
@@ -317,6 +331,10 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 6;
                 gp.monster[i++].worldY = gp.tileSize * 42;
+                for (int h=0; h<i; h++){
+                    gp.monster[h].life = 5;
+                    gp.monster[h].maxLife = 5;
+                }
                 break;
             case 5:
                 gp.monster[i] = new MON_GreenSlime(gp);
@@ -346,6 +364,15 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 22;
                 gp.monster[i++].worldY = gp.tileSize * 10;
+
+                gp.monster[i] = new MON_RedSlime(gp);
+                gp.monster[i].worldX = gp.tileSize * 22;
+                gp.monster[i++].worldY = gp.tileSize * 11;
+                for (int h=0; h<i; h++){
+                    if (gp.monster[h].name == "Red Slime") continue;
+                    gp.monster[h].life = 7;
+                    gp.monster[h].maxLife = 7;
+                }
                 break;
         }
     }

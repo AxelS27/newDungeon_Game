@@ -38,15 +38,17 @@ public class GamePanel extends JPanel implements Runnable {
     public int gameState;
     public final int mainMenuState = 0;
     public final int playState = 1;
-    public final int pauseState = 2;
+    public final int pauseMenuState = 2;
     public final int dialogueState = 3;
     public final int levelSelectState = 4;
     public final int loginState = 5;
     public final int registerState = 6;
+
     public int mainMenuIndex = 0;
     public int levelSelectIndex = 0;
     public int currentUserCurrentLevel = 1;
 
+    public int pauseMenuIndex = 0;
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
@@ -167,6 +169,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void changeMap(int mapNumber) {
+        stopMusic();
         currentMap = mapNumber;
         String mapFile = "/maps/level" + mapNumber + ".txt";
         tileM.loadMap(mapFile);
@@ -203,8 +206,22 @@ public class GamePanel extends JPanel implements Runnable {
             }
         }
     }
-
     public void update() {
+        if (gameState == playState) {
+            if (currentMap <= 3 && (sound.clip == null || !isPlayingMap123Music())) {
+                stopMusic();
+                playMusic(8);
+            } else if (currentMap >= 4 && (sound.clip == null || !isPlayingMap45Music())) {
+                stopMusic();
+                playMusic(9);
+            }
+        } else if (gameState == mainMenuState || gameState == loginState || gameState == registerState) {
+            if (sound.clip == null || isPlayingMapMusic()) {
+                stopMusic();
+                playMusic(10);
+            }
+        }
+
         if (gameState == playState) {
             player.update();
             for (Entity entity : npc) {
@@ -215,12 +232,22 @@ public class GamePanel extends JPanel implements Runnable {
             for (int i = 0; i < monster.length; i++) {
                 Entity entity = monster[i];
                 if (entity != null) {
-                    if (entity.alive && !entity.dying) {
+                    if (entity.alive || entity.dying) {
                         entity.update();
-                    } else if (!entity.alive) {
+                    } else {
                         monster[i] = null;
                     }
                 }
+            }
+            if (player.life <= 0) {
+                gameState = mainMenuState;
+                player.life = player.maxLife;
+                player.invincible = false;
+                player.invincibleCounter = 0;
+                player.hasKey = 0;
+                player.speed = 4;
+                player.direction = "down";
+                ui.showMessage("Game Over! Back to main menu.");
             }
         }
     }
@@ -228,8 +255,8 @@ public class GamePanel extends JPanel implements Runnable {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        if (gameState != mainMenuState && gameState != levelSelectState && !ui.gameFinished &&
-                gameState != loginState && gameState != registerState) {
+
+        if (gameState == playState || gameState == dialogueState) {
             tileM.draw(g2);
             for (SuperObject superObject : obj) {
                 if (superObject != null) {
@@ -248,22 +275,31 @@ public class GamePanel extends JPanel implements Runnable {
             }
             player.draw(g2);
         }
+
         ui.draw(g2);
         g2.dispose();
     }
 
     public void playSE(int i) {
-        sound.setFile(i);
-        sound.play();
+        sound.playSE(i);
     }
 
     public void playMusic(int i) {
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
+        sound.playMusic(i);
     }
 
     public void stopMusic() {
         sound.stop();
+    }
+    private boolean isPlayingMap123Music() {
+        return sound.currentSoundIndex == 8;
+    }
+
+    private boolean isPlayingMap45Music() {
+        return sound.currentSoundIndex == 9;
+    }
+
+    private boolean isPlayingMapMusic() {
+        return sound.currentSoundIndex == 8 || sound.currentSoundIndex == 9;
     }
 }

@@ -7,7 +7,7 @@ public class Main {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Dungeon Game");
+        window.setTitle("The Path Of Winter");
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);
         window.pack();

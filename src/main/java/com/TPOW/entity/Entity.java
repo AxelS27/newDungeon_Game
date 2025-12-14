@@ -2,50 +2,38 @@ package com.TPOW.entity;
 
 import com.TPOW.main.GamePanel;
 import com.TPOW.main.UtilityTool;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Entity {
-
     GamePanel gp;
-
     public String name;
     public int worldX, worldY;
     public int speed;
-
     public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2;
     public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public String direction;
-
     public int spriteCounter = 0;
     public int spriteNum = 1;
-
     public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
     public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
     public int solidAreaDefaultX, solidAreaDefaultY;
     public boolean collisionOn = false;
-
-
     public boolean invincible = false;
     public int invincibleCounter = 0;
     public int actionLockCounter = 0;
     int dyingCounter = 0;
-
     public boolean attacking = false;
     public boolean alive = true;
     public boolean dying = false;
-
     public boolean hpBarOn = false;
     int hpBarCounter = 0;
-
     public String[] dialogues = new String[20];
     public int dialogueIndex = 0;
-
     public int type;
-
     public int maxLife;
     public int life;
 
@@ -53,19 +41,16 @@ public class Entity {
         this.gp =gp;
     }
 
-    public void setAction(){
-        //COMING SOON
-    }
-    public void damageReaction(){
-        //COMING SOON
-    }
+    public void setAction(){}
+
+    public void damageReaction(){}
+
     public void speak(){
         if(dialogues[dialogueIndex] == null){
             dialogueIndex = 0;
         }
         gp.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
-        
         switch(gp.player.direction){
             case "up":
                 direction = "down";
@@ -79,7 +64,6 @@ public class Entity {
             case "right":
                 direction = "left";
                 break;
-            
         }
     }
 
@@ -89,6 +73,7 @@ public class Entity {
         collisionOn = false;
         gp.cChecker.checkTile(this);
         gp.cChecker.checkObject(this, false);
+
         boolean contactPlayer = gp.cChecker.checkPlayer(this);
 
         if (this.type == 2 && contactPlayer){
@@ -98,7 +83,6 @@ public class Entity {
                 gp.player.invincible = true;
             }
         }
-
 
         if (!collisionOn && !dying){
             switch(direction){
@@ -110,6 +94,7 @@ public class Entity {
         }
 
         spriteCounter++;
+
         if (spriteCounter > 12){
             if (spriteNum == 1){
                 spriteNum = 2;
@@ -126,12 +111,11 @@ public class Entity {
                 invincibleCounter = 0;
             }
         }
-
     }
-
 
     public void draw(Graphics2D g2){
         BufferedImage image = null;
+
         int screenX = worldX - gp.player.worldX + gp.player.screenX;
         int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
@@ -139,8 +123,6 @@ public class Entity {
                 worldX - gp.tileSize < gp.player.worldX + gp.player.screenX &&
                 worldY + gp.tileSize > gp.player.worldY - gp.player.screenY &&
                 worldY - gp.tileSize < gp.player.worldY + gp.player.screenY ){
-
-
             switch (direction) {
                 case "up":
                     if (spriteNum == 1) {
@@ -177,7 +159,6 @@ public class Entity {
             }
 
             if (type==2 && hpBarOn){
-
                 double oneScale = (double)gp.tileSize/maxLife;
                 double hpBarValue = oneScale*life;
 
@@ -187,6 +168,7 @@ public class Entity {
                 g2.fillRect(screenX, screenY - 15, (int)hpBarValue, 10) ;
 
                 hpBarCounter++;
+
                 if (hpBarCounter > 600){
                     hpBarCounter = 0;
                     hpBarOn = false;
@@ -207,10 +189,10 @@ public class Entity {
             changeAlpha(g2, 1);
         }
     }
+
     public void dyingAnimation(Graphics2D g2){
         dyingCounter++;
-
-            int i = 10;
+        int i = 10;
 
         if (dyingCounter <= i){
             changeAlpha(g2, 0);
@@ -243,7 +225,9 @@ public class Entity {
         BufferedImage image = null;
 
         try{
-            image = ImageIO.read(getClass().getResourceAsStream(filePath+".png"));
+            InputStream is = getClass().getResourceAsStream(filePath + ".png");
+            if (is == null) return null;
+            image = ImageIO.read(is);
             image = uTool.scaleImage(image, width, height);
         } catch(IOException e){
             e.printStackTrace();
@@ -251,17 +235,19 @@ public class Entity {
 
         return image;
     }
+
     public BufferedImage setup(String filePath){
         UtilityTool uTool = new UtilityTool();
         BufferedImage image = null;
 
         try{
-            image = ImageIO.read(getClass().getResourceAsStream(filePath+".png"));
+            InputStream is = getClass().getResourceAsStream(filePath + ".png");
+            if (is == null) return null;
+            image = ImageIO.read(is);
             image = uTool.scaleImage(image, gp.tileSize, gp.tileSize);
         } catch(IOException e){
             e.printStackTrace();
         }
-
         return image;
     }
 

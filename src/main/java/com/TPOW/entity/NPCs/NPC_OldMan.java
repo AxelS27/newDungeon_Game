@@ -30,26 +30,36 @@ public class NPC_OldMan extends Entity {
     }
     public void setDialogue() {
         int map = gp.currentMap;
+        int i=0;
         switch(map){
             case 1:
-                dialogues[0] = "Hello adventurer!";
-                dialogues[1] = "Ganbate";
+                dialogues[i++] = "Guten Morgen Adventurer!\nHO HO HO";
+                dialogues[i++] = "Welcome to The Path Of  Winter";
+                dialogues[i++] = "Here you have to find some key to open\nup the door";
+                dialogues[i++] = "So you can make a progress to the\nnext level";
+                dialogues[i++] = "Good luck adventurer!\nHO HO HO";
                 break;
             case 2:
-                dialogues[0] = "Hello adventurer!";
-                dialogues[1] = "Ganbate";
+                dialogues[i++] = "The fate has brought us together again\nadventurer! HO HO HO";
+                dialogues[i++] = "Sometime the pit can take you into\nloneliness";
+                dialogues[i++] = "HO HO HO";
+
                 break;
             case 3:
-                dialogues[0] = "Hello adventurer!";
-                dialogues[1] = "Ganbate";
+                dialogues[i++] = "HO HO HO,  Hallo Adventurer!\nwe meet again";
+                dialogues[i++] = "There is some items that can boost\nyour attributes!";
+                dialogues[i++] = "items = [ ]\nitems.append('boots')\nfor i in items:\n  print(i) #HO HO HO";
                 break;
             case 4:
-                dialogues[0] = "Hello adventurer!";
-                dialogues[1] = "Ganbate";
+                dialogues[i++] = "Aren't you suprised,\nwhy am i every where?";
+                dialogues[i++] = "HO HO HO,  anyway i think there is\na strange kind of slime ahead";
+                dialogues[i++] = "Stay save Adventurer!\nHO HO HO";
                 break;
             case 5:
-                dialogues[0] = "Hello adventurer!";
-                dialogues[1] = "Ganbate";
+                dialogues[i++] = "01012001";
+                dialogues[i++] = "01001011";
+                dialogues[i++] = "01001101";
+                dialogues[i++] = "01001010";
                 break;
         }
 

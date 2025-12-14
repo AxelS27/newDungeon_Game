@@ -204,7 +204,6 @@ public class Player extends Entity {
                     int currentLevel = gp.currentMap;
                     int nextLevel = currentLevel + 1;
                     int maxLevel = 5;
-
                     if (nextLevel > gp.currentUserCurrentLevel && nextLevel <= maxLevel) {
                         gp.updateCurrentUserLevel(nextLevel);
                         gp.ui.showMessage("Level " + currentLevel + " completed! Unlocked Level " + nextLevel + ".");

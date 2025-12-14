@@ -21,6 +21,7 @@ public class AssetSetter {
             gp.obj[i] = null;
         }
         int i = 0;
+        gp.ui.playTime = 0;
         switch (map) {
             case 1:
                 gp.player.worldX = 38 * gp.tileSize;
@@ -220,7 +221,6 @@ public class AssetSetter {
         }
         int i=0;
         switch (map) {
-            
             case 1:  
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 27;
@@ -251,7 +251,12 @@ public class AssetSetter {
                 gp.monster[i] = new MON_GreenSlime(gp);
                 gp.monster[i].worldX = gp.tileSize * 35;
                 gp.monster[i++].worldY = gp.tileSize * 28;
-
+                gp.monster[i] = new MON_GreenSlime(gp);
+                gp.monster[i].worldX = gp.tileSize * 18;
+                gp.monster[i++].worldY = gp.tileSize * 8;
+                gp.monster[i] = new MON_GreenSlime(gp);
+                gp.monster[i].worldX = gp.tileSize * 23;
+                gp.monster[i++].worldY = gp.tileSize * 39;
                 for (int h=0; h<i; h++){
                     gp.monster[h].life = 3;
                     gp.monster[h].maxLife = 3;

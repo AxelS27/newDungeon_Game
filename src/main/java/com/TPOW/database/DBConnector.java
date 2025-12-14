@@ -14,12 +14,12 @@ public class DBConnector {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("✅ Koneksi ke database berhasil!");
+            System.out.println("Successfully connected to database!");
         } catch (ClassNotFoundException e) {
-            System.err.println("❌ MySQL JDBC Driver tidak ditemukan!");
+            System.err.println("MySQL JDBC Driver not found!");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.err.println("❌ Gagal terhubung ke database!");
+            System.err.println("Failed to connect to database!");
             e.printStackTrace();
         }
         return conn;
@@ -29,7 +29,7 @@ public class DBConnector {
         if (conn != null) {
             try {
                 conn.close();
-                System.out.println("🔌 Koneksi ditutup.");
+                System.out.println("Connection closed");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

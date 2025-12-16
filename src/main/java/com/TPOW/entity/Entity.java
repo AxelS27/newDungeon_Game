@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Entity {
+public abstract class Entity {
     GamePanel gp;
     public String name;
     public int worldX, worldY;
